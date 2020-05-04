@@ -745,6 +745,11 @@ class QMNQuizManager {
             </section>
             <?php
         }
+		
+		$no_thanks_link = '';
+		if ($options->no_thanks_link == 1) {
+			$no_thanks_link = '<a href="#" class="no_thanks_link">'.__('No thanks, Just show me my score').'</a>';
+		}
         ?>
         <!-- View for pagination -->
         <script type="text/template" id="tmpl-qsm-pagination">
@@ -755,6 +760,7 @@ class QMNQuizManager {
             <div id="qsm-progress-bar" style="display:none;"></div>
             <a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html($options->next_button_text); ?></a>
             <input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr(htmlspecialchars_decode($options->submit_button_text, ENT_QUOTES)); ?>' />
+			<?php echo $no_thanks_link;?>
             </div>
         </script>
         <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr($question_list); ?>' />
@@ -917,8 +923,12 @@ class QMNQuizManager {
         do_action('mlw_qmn_end_quiz_section');
         $section_display .= ob_get_contents();
         ob_end_clean();
+		
 
         $section_display .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES)) . "' />";
+		if ($qmn_quiz_options->no_thanks_link == 1) {
+			$section_display .= '<a href="#" class="no_thanks_link">'.__('No thanks, Just show me my score').'</a>';
+		}
         $section_display .= "</div>";
 
         return $section_display;

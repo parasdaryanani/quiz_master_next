@@ -454,16 +454,20 @@ function qmnResetError( quiz_form_id ) {
 	jQuery( '#' + quiz_form_id + ' .quiz_section' ).removeClass( 'qmn_error' );
 }
 
-function qmnValidation( element, quiz_form_id ) {
+function qmnValidation( element, quiz_form_id, ignoreEmail) {
 	var result = true;
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var email_error = qmn_quiz_data[ quiz_id ].error_messages.email;
 	var number_error = qmn_quiz_data[ quiz_id ].error_messages.number;
 	var empty_error = qmn_quiz_data[ quiz_id ].error_messages.empty;
 	var incorrect_error = qmn_quiz_data[ quiz_id ].error_messages.incorrect;
-	qmnResetError( quiz_form_id );        
+	qmnResetError( quiz_form_id );
+	
 	jQuery( element ).each(function(){
 		if ( jQuery( this ).attr( 'class' )) {
+			if (ignoreEmail == true && jQuery( this ).attr( 'class' ).indexOf( 'qsm_required_text' ) > -1) {
+				return;
+			}
 			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) > -1 && this.value !== "" ) {
 				var x = this.value;
 				var atpos = x.indexOf('@');
@@ -543,10 +547,10 @@ function getFormData($form){
     return indexed_array;
 }
 
-function qmnFormSubmit( quiz_form_id ) {
+function qmnFormSubmit( quiz_form_id, ignoreEmail) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
-	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
+	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id, ignoreEmail);
 	/**
 	 * Update Timer in MS
 	 */
@@ -866,6 +870,12 @@ jQuery(function() {
 	jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
 	  event.preventDefault();
 		qmnFormSubmit( this.id );
+	});
+	jQuery( '.no_thanks_link' ).on( "click", function( event ) {
+		var ignoreEmail = true;
+		var form = jQuery(this).parents('.qmn_quiz_form');
+		var form_id = form.attr('id');
+		qmnFormSubmit( form_id, ignoreEmail);
 	});
         
         jQuery(document).on('click','.btn-reload-quiz',function(e){
