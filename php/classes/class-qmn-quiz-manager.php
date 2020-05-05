@@ -748,20 +748,20 @@ class QMNQuizManager {
 		
 		$no_thanks_link = '';
 		if ($options->no_thanks_link == 1) {
-			$no_thanks_link = '<a href="#" class="no_thanks_link">'.__('No thanks, Just show me my score').'</a>';
+			$no_thanks_link = '<a href="#" class="no_thanks_link margin-bottom" style="float: right;">'.__('No thanks, Just show me my score').'</a>';
 		}
         ?>
         <!-- View for pagination -->
         <script type="text/template" id="tmpl-qsm-pagination">
-            <div class="qsm-pagination qmn_pagination border margin-bottom">
+            <div class="qsm-pagination qmn_pagination border">
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
             <div class="qmn_page_counter_message"></div>
             <div id="qsm-progress-bar" style="display:none;"></div>
             <a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html($options->next_button_text); ?></a>
             <input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr(htmlspecialchars_decode($options->submit_button_text, ENT_QUOTES)); ?>' />
-			<?php echo $no_thanks_link;?>
             </div>
+			<?php echo $no_thanks_link;?>
         </script>
         <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr($question_list); ?>' />
         <?php

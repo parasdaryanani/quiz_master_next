@@ -321,10 +321,12 @@ var QSM;
 			$quizForm.find( '.qsm-previous' ).hide();
 			$quizForm.find( '.qsm-next' ).hide();
 			$quizForm.find( '.qsm-submit-btn' ).hide();
+			$quizForm.find( '.no_thanks_link' ).hide();
 			if ( pageNumber < $pages.length ) {
 				$quizForm.find( '.qsm-next' ).show();
 			} else {
 				$quizForm.find( '.qsm-submit-btn' ).show();
+				$quizForm.find( '.no_thanks_link' ).show();
 			}
 			if ( 1 < pageNumber ) {
 				$quizForm.find( '.qsm-previous' ).show();
