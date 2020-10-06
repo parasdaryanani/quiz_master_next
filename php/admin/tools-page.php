@@ -25,10 +25,15 @@ function qsm_generate_quiz_tools() {
             #qsm_restore_box .hndle,
             #qsm_audit_box .hndle{
                 padding-left: 15px;                
-                padding-bottom: 15px;
+                padding-bottom: 0;
+            }
+            .qsm-tools-page .handle-order-higher,
+            .qsm-tools-page .handle-order-lower,
+            .qsm-tools-page .handle-actions{
+                display: none;
             }
         </style>
-	<div class="wrap">
+	<div class="wrap qsm-tools-page">
 	<h2><?php esc_html_e('Tools', 'quiz-master-next'); ?></h2>
 
 	<div style="float:left; width:100%;" class="inner-sidebar1">
@@ -138,7 +143,7 @@ function qsm_audit_box() {
 	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
-	<p>Total actions since QSM installed: <?php echo esc_html( $audit_total ); ?></p>
+        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
 	<?php
 
 	// Determine which navigation to show.

@@ -89,7 +89,7 @@ function qsm_display_recent_quizzes($attrs) {
         }
     }
     if ($i == 0)
-        $result .= "No quiz found";
+        $result .= __("No quiz found", 'quiz-master-next');
     $result .= "</div>";
     return $result;
 }
@@ -167,8 +167,11 @@ function qsm_generate_fb_header_metadata() {
             //Fb share description
             $sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'facebook_sharing_text', '');
             $sharing = apply_filters('mlw_qmn_template_variable_results_page', $sharing, $results_array);
-            $default_fb_image = QSM_PLUGIN_URL . 'assets/icon-200x200.png';
-            $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_fb_image', '');
+            $default_fb_image = QSM_PLUGIN_URL . 'assets/icon-200x200.png';            
+            $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'result_page_fb_image', '');
+            if( empty( $get_fb_sharing_image ) ) {
+                $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_fb_image', '');
+            }
             if ($get_fb_sharing_image !== '') {
                 $default_fb_image = $get_fb_sharing_image;
             }
@@ -188,29 +191,6 @@ function qsm_generate_fb_header_metadata() {
 
 add_action('wp_head', 'qsm_generate_fb_header_metadata');
 
-
-add_action('wp_head', 'qsm_check_script_error');
-/**
- * @since 6.4.8
- * Show the JS error
- */
-function qsm_check_script_error() {
-    if (is_singular('qsm_quiz') && is_user_logged_in() && current_user_can('administrator')) {
-        ?>
-        <script src="<?php echo QSM_PLUGIN_URL . 'js/show-js-error.custom.js'; ?>"></script>
-        <link rel='stylesheet' href='<?php echo QSM_PLUGIN_URL . 'css/show-js-error.css'; ?>' type='text/css' media='all' />
-        <script>
-            //Display JS error
-            showJSError.init({
-                title: 'Javascript error detected by QSM Plugin. Try deactivating other plugins and themes. If the error still persists, please report the same on our support forums',
-                copyText: 'Copy to clipboard',                
-                userAgent: navigator.userAgent,
-                helpLinks: true
-            });
-        </script>
-        <?php
-    }
-}
 
 /**
  * @since QSM 6.4.6
@@ -250,11 +230,11 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
     if($qmn_quiz_options->enable_result_after_timer_end == 0){
         $return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
         $return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
-        $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';
-        $return_display .= '<main class="qsm-popup__content">';        
-        $return_display .= '<img src="' . QSM_PLUGIN_URL . '/assets/clock.png' .'"/>';
+        $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
+        $return_display .= '<div class="qsm-popup__content">';        
+        $return_display .= '<img src="' . QSM_PLUGIN_URL . 'assets/clock.png' .'" alt="clock.png"/>';
         $return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
-        $return_display .= '</main>';
+        $return_display .= '</div>';
         $return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button><button data-quiz_id="'. $qmn_quiz_options->quiz_id .'" class="submit-the-form qmn_btn">Submit Quiz</button></footer>';
         $return_display .= '</div>';
         $return_display .= '</div>';
